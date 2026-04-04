@@ -205,3 +205,39 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+
+# Ignore Dataset folders
+data/
+datasets/
+raw_data/
+processed_data/
+
+# Ignore heavy Data files
+*.csv
+*.tsv
+*.json
+*.parquet
+*.zip
+*.7z
+*.tar.gz
+
+# Ignore trained models and weights (Heavy Binary Files)
+*.pkl
+*.joblib
+*.h5
+*.onnx
+*.bst
+*.model
+models/
+checkpoints/
+
+# Ignore Visualization/Log exports (optional)
+# Keep them if you want to track small plots, ignore if they are many
+# reports/
+# figures/
+
+# Environment and Configs
+.env
+.python-version
+.vscode/
