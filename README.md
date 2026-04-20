@@ -4,58 +4,58 @@
 ![LightGBM](https://img.shields.io/badge/LightGBM-Forecasting-green.svg)
 ![Machine Learning](https://img.shields.io/badge/Machine%20Learning-Regression-orange.svg)
 
-## Resumen del Proyecto
-Este proyecto aborda el desafío de predecir las ventas unitarias de miles de artículos en diferentes tiendas de **Corporación Favorita**, una gran cadena de supermercados con sede en Ecuador. 
+## Project Summary
+This project tackles the challenge of predicting unit sales for thousands of items across different stores of **Corporación Favorita**, a large grocery retailer based in Ecuador. 
 
-Los pronósticos precisos son cruciales en la industria minorista: sobrestimar la demanda resulta en exceso de inventario y desperdicio de productos perecederos, mientras que subestimarla provoca desabastecimiento, pérdida de ingresos y clientes insatisfechos. 
+Accurate forecasting is crucial in the retail industry: overestimating demand leads to overstocking and waste of perishable goods, while underestimating it causes stockouts, lost revenue, and dissatisfied customers. 
 
-**Objetivo:** Construir un modelo de Machine Learning para predecir las ventas diarias (variable `sales`) durante un periodo de 16 días, minimizando el Error Cuadrático Medio Logarítmico (RMSLE).
+**Objective:** Build a Machine Learning model to predict daily sales (the `sales` variable) over a 16-day period, minimizing the Root Mean Squared Logarithmic Error (RMSLE).
 
-## Los Datos
-> **Nota:** Por buenas prácticas de desarrollo y límites de tamaño de Git, los datasets originales no están incluidos en este repositorio.
+## The Data
+> **Note:** Following development best practices and Git size limits, the original datasets are not included in this repository.
 
-Los datos pueden ser descargados desde la competencia oficial: [Kaggle: Store Sales - Time Series Forecasting](https://www.kaggle.com/competitions/store-sales-time-series-forecasting/data).
+The data can be downloaded from the official competition: [Kaggle: Store Sales - Time Series Forecasting](https://www.kaggle.com/competitions/store-sales-time-series-forecasting/data).
 
-El conjunto de datos incluye información detallada sobre:
-* **Fechas y tiendas:** Histórico de ventas por tienda y familia de productos.
-* **Promociones:** Artículos en descuento en fechas específicas.
-* **Factores externos:** Precios diarios del petróleo (fundamental para la economía ecuatoriana) y días festivos/eventos locales y nacionales.
+The dataset includes detailed information regarding:
+* **Dates and stores:** Historical sales by store and product family.
+* **Promotions:** Discounted items on specific dates.
+* **External factors:** Daily oil prices (fundamental to the Ecuadorian economy) and local/national holidays or events.
 
-## Enfoque Metodológico (Analytic Approach)
-El desarrollo del proyecto siguió el flujo de trabajo estándar de ciencia de datos:
+## Analytic Approach
+The project's development followed a standard data science workflow:
 
-1. **Análisis Exploratorio de Datos (EDA):** Identificación de tendencias, estacionalidad semanal/anual y el impacto de variables exógenas como el precio del petróleo y los días festivos.
-2. **Ingeniería de Características (Feature Engineering):** * Extracción de componentes temporales (día de la semana, mes, año).
-   * Creación de variables rezagadas (lags) y medias móviles para capturar la inercia de las ventas.
-3. **Modelado:** Implementación de **LightGBM** (`LGBMRegressor`), un algoritmo de Gradient Boosting altamente eficiente y robusto para series temporales de gran volumen.
-4. **Optimización y Post-procesamiento (Técnicas Clave):**
-   * **Transformación de la Variable Objetivo:** Se entrenó el modelo utilizando el logaritmo de las ventas para suavizar distribuciones sesgadas, revirtiendo el cálculo (`np.expm1`) al generar la predicción final.
-   * **Restricción de Negocio (Clipping):** Se aplicó `np.clip(predicciones, 0, None)` para forzar un límite inferior de cero, asegurando que el modelo no pronosticara ventas negativas (lo cual es matemáticamente posible, pero lógicamente incorrecto en retail).
-   * **Ajuste de Hiperparámetros:** Tuning avanzado de LightGBM (`n_estimators=2000`, `num_leaves=127`) para maximizar la profundidad del aprendizaje previniendo el sobreajuste.
+1. **Exploratory Data Analysis (EDA):** Identification of trends, weekly/annual seasonality, and the impact of exogenous variables such as oil prices and holidays.
+2. **Feature Engineering:** * Extraction of time-based components (day of the week, month, year).
+   * Creation of lag variables and moving averages to capture sales momentum.
+3. **Modeling:** Implementation of **LightGBM** (`LGBMRegressor`), a highly efficient and robust Gradient Boosting algorithm for large-volume time series.
+4. **Optimization and Post-processing (Key Techniques):**
+   * **Target Variable Transformation:** The model was trained using the logarithm of sales to smooth out skewed distributions, reverting the calculation (`np.expm1`) when generating the final prediction.
+   * **Business Constraint (Clipping):** `np.clip(predictions, 0, None)` was applied to enforce a lower bound of zero, ensuring the model did not forecast negative sales (which is mathematically possible but logically incorrect in retail).
+   * **Hyperparameter Tuning:** Advanced LightGBM tuning (`n_estimators=2000`, `num_leaves=127`) to maximize learning depth while preventing overfitting.
 
-## Resultados y Evaluación
-El modelo fue evaluado utilizando la métrica oficial de la competencia, **RMSLE** (Root Mean Squared Logarithmic Error). Esta métrica penaliza los errores relativos y es ideal cuando hay un gran rango en los valores objetivo.
+## Results and Evaluation
+The model was evaluated using the official competition metric, **RMSLE** (Root Mean Squared Logarithmic Error). This metric penalizes relative errors and is ideal when there is a wide range of target values.
 
-* **Score RMSLE de Validación:** `0.48`
+* **Validation RMSLE Score:** `0.48`
 
-## Cómo reproducir este proyecto
+## How to Reproduce This Project
 
-Si deseas ejecutar este proyecto localmente, sigue estos pasos:
+If you want to run this project locally, follow these steps:
 
-1. Clona este repositorio:
+1. Clone this repository:
    ```bash
    git clone [https://github.com/JuanCL2000/Store-Sales---Time-Series-Forecasting.git](https://github.com/JuanCL2000/Store-Sales---Time-Series-Forecasting.git)
    cd Store-Sales---Time-Series-Forecasting
-
-2. Instala las dependencias necesarias:
+   
+2. Install the necessary dependencies:
 
 pip install -r requirements.txt
 
-3. Descarga los datos desde Kaggle y extrae los archivos .csv en una carpeta llamada data/raw/ en la raíz del proyecto.
+3. Download the data from Kaggle and extract the .csv files into a folder named data/raw/ in the project root.
 
-4. Ejecuta la libreta de Jupyter:
+4. Run the Jupyter Notebook:
 
-jupyter notebook notebooks/[01_data_loading_and_merging].ipynb
+jupyter notebook notebooks/[store_sales_forecasting.ipynb].ipynb
 
 ### Autor
 
